@@ -1,6 +1,8 @@
 package com.darrenblog.bitsandpizzas;
 
 import android.content.Intent;
+import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -27,6 +29,9 @@ public class MainActivity extends AppCompatActivity {
         SectionsPagerAdapter pagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         ViewPager pager = findViewById(R.id.pager);
         pager.setAdapter(pagerAdapter);
+
+        TabLayout tabLayout = findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(pager);
     }
 
     @Override
@@ -81,6 +86,22 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public int getCount() {
             return 4;
+        }
+
+        @Nullable
+        @Override
+        public CharSequence getPageTitle(int position) {
+            switch (position) {
+                case 0:
+                    return getResources().getText(R.string.home_tab);
+                case 1:
+                    return getResources().getText(R.string.pizza_tab);
+                case 2:
+                    return getResources().getText(R.string.pasta_tab);
+                case 3:
+                    return getResources().getText(R.string.store_tab);
+            }
+            return null;
         }
     }
 }
