@@ -9,12 +9,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 public class CaptionedImagesAdapter extends RecyclerView.Adapter<CaptionedImagesAdapter.ViewHolder> {
 
     private String[] captions;
     private int[] imageIds;
+    private Listener listener;
+
+    interface Listener {
+        void onClick(int position);
+    }
 
     @NonNull
     @Override
@@ -23,8 +29,12 @@ public class CaptionedImagesAdapter extends RecyclerView.Adapter<CaptionedImages
         return new ViewHolder(cv);
     }
 
+    public void setListener(Listener listener) {
+        this.listener = listener;
+    }
+
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int i) {
         CardView cardView = viewHolder.cardView;
         ImageView imageView = cardView.findViewById(R.id.info_image);
         Drawable drawable = ContextCompat.getDrawable(cardView.getContext(), imageIds[i]);
@@ -32,6 +42,14 @@ public class CaptionedImagesAdapter extends RecyclerView.Adapter<CaptionedImages
         imageView.setContentDescription(captions[i]);
         TextView textView = cardView.findViewById(R.id.info_text);
         textView.setText(captions[i]);
+        cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onClick(i);
+                }
+            }
+        });
     }
 
     @Override
